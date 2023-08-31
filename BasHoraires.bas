@@ -62,7 +62,7 @@ Public Sub GetOptions()
         .Couleurs.HeureCourante = RGB(100, 61, 125)
         .Couleurs.ProchaineVisite = RGB(243, 41, 31)
         .Couleurs.AutreVisite = RGB(0, 0, 0)
-        .Couleurs.EtatVisite = RGB(255, 133, 43)
+        .Couleurs.EtatVisite = RGB(30, 56, 140)
         
         ' Timer
         .IntervalleMAJHeure = GetSetting(App.Title, "Général", _
