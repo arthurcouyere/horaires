@@ -57,29 +57,21 @@ Public Sub GetOptions()
     With gOptions
     
         'Couleurs
-'        .Couleurs.Fond = StringToRGB(GetSetting(App.Title, "Couleurs", _
-'                            "Fond", "C0C0C0"))
-'        .Couleurs.Titre = StringToRGB(GetSetting(App.Title, "Couleurs", _
-'                            "Titre", "000000"))
-'        .Couleurs.HeureCourante = StringToRGB(GetSetting(App.Title, "Couleurs", _
-'                            "HeureCourante", "000000"))
-'        .Couleurs.ProchaineVisite = StringToRGB(GetSetting(App.Title, "Couleurs", _
-'                            "ProchaineVisite", "000000"))
-'        .Couleurs.AutreVisite = StringToRGB(GetSetting(App.Title, "Couleurs", _
-'                            "AutreVisite", "000000"))
         .Couleurs.Fond = RGB(255, 255, 255)
         .Couleurs.Titre = RGB(32, 57, 148) ' RGB(28, 119, 29)
         .Couleurs.HeureCourante = RGB(100, 61, 125)
         .Couleurs.ProchaineVisite = RGB(243, 41, 31)
         .Couleurs.AutreVisite = RGB(0, 0, 0)
+        .Couleurs.EtatVisite = RGB(255, 133, 43)
         
         ' Timer
         .IntervalleMAJHeure = GetSetting(App.Title, "Général", _
-                            "IntervalleMAJHeure", 50)
+                                         "IntervalleMAJHeure", 50)
+        .IntervalleClignote = GetSetting(App.Title, "Général", _
+                                         "IntervalleClignote", 1000)
         
         ' Visites
         .DureeVisite = GetSetting(App.Title, "Général", "DuréeVisite", 6)
-        '.NbVisites = GetSetting(App.Title, "Général", "NbVisites", 10)
         .NbVisites = NB_VISITES
         
     End With

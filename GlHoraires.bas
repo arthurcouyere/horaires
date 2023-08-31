@@ -7,6 +7,7 @@ Public Type Couleur_Type
     HeureCourante As Long
     ProchaineVisite As Long
     AutreVisite As Long
+    EtatVisite As Long
 End Type
 
 Public Enum Etat_Enum
@@ -18,7 +19,8 @@ End Enum
 Public Type Option_Type
     NbVisites   As Long             ' Nb de visites affichées simultanément
     DureeVisite As Long             ' Durée d'une visite (en minutes)
-    IntervalleMAJHeure As Long      ' Intervalle entre 2 MAJ de l'heure courante (en secondes)
+    IntervalleMAJHeure As Long      ' Intervalle entre 2 MAJ de l'heure courante (en millisecondes)
+    IntervalleClignote As Long      ' Période de clignotement de l'etat (en millisecondes)
     Couleurs As Couleur_Type        ' Couleurs utilisées
 End Type
 

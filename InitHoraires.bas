@@ -9,7 +9,13 @@ Option Explicit
 ' Effets de bord : Registry
 '----------------------------------------------------------------
 Public Sub InitRegistry()
-    Call Shell("regedit /s """ & App.Path & "\" & FICHIER_REG & """")
+    Dim cFicReg As String
+    
+    cFicReg = App.Path & "\" & FICHIER_REG
+    If Dir(cFicReg) <> "" Then
+        Call Shell("regedit /s """ & cFicReg & """")
+    End If
+    
 End Sub
 
 '----------------------------------------------------------------
@@ -31,6 +37,8 @@ Public Sub InitFrmHoraires()
         ' Timer
         .tmrHoraires.Interval = gOptions.IntervalleMAJHeure
         .tmrHoraires.Enabled = True
+        .tmrColor.Interval = gOptions.IntervalleClignote
+        .tmrColor.Enabled = True
 
         ' Construction dynamique de la liste des visites
         For i = .lblHeureVisite.LBound + 1 To gOptions.NbVisites
@@ -70,6 +78,8 @@ Public Sub InitFrmHoraires()
             .lblEtat(i).FontBold = False
             .lblEtat(i).FontSize = 30
             .lblEtat(i).Height = 855
+            .lblEtat(i).ZOrder 0
+            .lblEtat(i).BackStyle = 0
             .lblEtat(i).Top = .lblHeureVisite(i).Top + _
                         (.lblHeureVisite(i).Height - .lblEtat(i).Height) / 2
         Next
@@ -77,7 +87,7 @@ Public Sub InitFrmHoraires()
         ' Couleurs
         .BackColor = gOptions.Couleurs.Fond
         
-        .picHoraires.BackColor = gOptions.Couleurs.Fond
+        '.picHoraires.BackColor = gOptions.Couleurs.Fond
         '.lblTitre.BackColor = gOptions.Couleurs.Fond
         '.lblTitre.ForeColor = gOptions.Couleurs.Titre
         .picTitre.BackColor = gOptions.Couleurs.Fond
@@ -98,13 +108,12 @@ Public Sub InitFrmHoraires()
                 .lblVisite(i).ForeColor = gOptions.Couleurs.ProchaineVisite
                 .lblHeureVisite(i).ForeColor = gOptions.Couleurs.ProchaineVisite
                 .lblNoVisite(i).ForeColor = gOptions.Couleurs.ProchaineVisite
-                .lblEtat(i).ForeColor = gOptions.Couleurs.ProchaineVisite
             Else
                 If i <= 2 Then .lblVisite(i).ForeColor = gOptions.Couleurs.AutreVisite
                 .lblHeureVisite(i).ForeColor = gOptions.Couleurs.AutreVisite
                 .lblNoVisite(i).ForeColor = gOptions.Couleurs.AutreVisite
-                .lblEtat(i).ForeColor = gOptions.Couleurs.AutreVisite
             End If
+            .lblEtat(i).ForeColor = gOptions.Couleurs.EtatVisite
         Next
         
         ' Image

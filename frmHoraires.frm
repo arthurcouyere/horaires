@@ -14,13 +14,18 @@ Begin VB.Form frmHoraires
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    WindowState     =   2  'Maximized
+   Begin VB.Timer tmrColor 
+      Enabled         =   0   'False
+      Left            =   240
+      Top             =   600
+   End
    Begin VB.PictureBox picTitre 
       BorderStyle     =   0  'None
       Height          =   1455
       Left            =   1080
       ScaleHeight     =   1455
       ScaleWidth      =   12255
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   0
       Width           =   12255
    End
@@ -29,15 +34,11 @@ Begin VB.Form frmHoraires
       Left            =   240
       Top             =   120
    End
-   Begin VB.PictureBox picHoraires 
-      BorderStyle     =   0  'None
-      Height          =   3855
-      Left            =   600
-      ScaleHeight     =   3855
-      ScaleWidth      =   7575
-      TabIndex        =   3
-      Top             =   3360
-      Width           =   7575
+   Begin VB.Image picHoraires 
+      Height          =   4455
+      Left            =   360
+      Top             =   3000
+      Width           =   6735
    End
    Begin VB.Label lblEtat 
       Caption         =   "Complet"
@@ -50,12 +51,12 @@ Begin VB.Form frmHoraires
          Italic          =   -1  'True
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   950
+      Height          =   945
       Index           =   1
       Left            =   5280
-      TabIndex        =   7
+      TabIndex        =   6
       Top             =   1500
-      Width           =   3015
+      Width           =   2775
    End
    Begin VB.Label lblNoVisite 
       Caption         =   "999"
@@ -71,7 +72,7 @@ Begin VB.Form frmHoraires
       Height          =   1215
       Index           =   1
       Left            =   8280
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   1440
       Width           =   1440
    End
@@ -88,7 +89,7 @@ Begin VB.Form frmHoraires
       EndProperty
       Height          =   615
       Left            =   720
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   8160
       Width           =   2175
    End
@@ -269,6 +270,18 @@ Private Sub Form_Resize()
     picHoraires.Width = lblNoVisite(2).Left - picHoraires.Left - 200
     picHoraires.Top = lblVisite(2).Top + lblVisite(2).Height + 50
     picHoraires.Height = lblHeureCourante.Top - picHoraires.Top
+    
+End Sub
+
+Private Sub tmrColor_Timer()
+    Dim i As Long
+    
+    For i = 1 To gOptions.NbVisites
+    
+        ' Fait clignoter l'état de visite
+        lblEtat(i).Visible = Not lblEtat(i).Visible
+    
+    Next
     
 End Sub
 
