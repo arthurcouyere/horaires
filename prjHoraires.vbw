@@ -1,0 +1,6 @@
+frmHoraires = 44, 44, 479, 492, C, 22, 22, 547, 462, 
+ConstHoraires = 176, 176, 611, 624, C
+InitHoraires = 176, 176, 611, 624, C
+GlHoraires = 66, 66, 501, 514, C
+BasHoraires = 132, 132, 567, 580, C
+PutHoraires = 154, 154, 589, 602, Z
