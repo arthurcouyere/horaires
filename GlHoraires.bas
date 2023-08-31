@@ -20,3 +20,5 @@ End Type
 Public gOptions As Option_Type
 
 Public gTabHeureVisite() As Date
+Public gTabNoVisite() As Long
+

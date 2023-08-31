@@ -30,9 +30,10 @@ Public Sub PutVisitesDansForm()
     Dim cTime As String
     
     With frmHoraires
-        For i = LBound(gTabHeureVisite) To UBound(gTabHeureVisite)
+        For i = 1 To gOptions.NbVisites
             cTime = Format(gTabHeureVisite(i), "hh:nn")
             .lblHeureVisite(i).Caption = cTime
+            .lblNoVisite(i).Caption = CStr(gTabNoVisite(i))
         Next
     End With
     

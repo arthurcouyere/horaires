@@ -14,91 +14,128 @@ Begin VB.Form frmHoraires
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    WindowState     =   2  'Maximized
-   Begin VB.PictureBox picHoraires 
-      BorderStyle     =   0  'None
-      Height          =   6015
-      Left            =   600
-      ScaleHeight     =   6015
-      ScaleWidth      =   7695
-      TabIndex        =   4
-      Top             =   2640
-      Width           =   7695
-   End
    Begin VB.Timer tmrHoraires 
       Enabled         =   0   'False
       Left            =   240
       Top             =   120
    End
-   Begin VB.Label lblTitre 
-      Alignment       =   2  'Center
-      Caption         =   "Horaires des visites"
+   Begin VB.PictureBox picHoraires 
+      BorderStyle     =   0  'None
+      Height          =   3855
+      Left            =   600
+      ScaleHeight     =   3855
+      ScaleWidth      =   7575
+      TabIndex        =   4
+      Top             =   3360
+      Width           =   7575
+   End
+   Begin VB.Label lblNoVisite 
+      Caption         =   "1"
       BeginProperty Font 
          Name            =   "Comic Sans MS"
-         Size            =   36
+         Size            =   44.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1095
-      Left            =   120
-      TabIndex        =   3
-      Top             =   240
-      Width           =   13575
+      Height          =   1215
+      Index           =   1
+      Left            =   7680
+      TabIndex        =   6
+      Top             =   1410
+      Width           =   2160
    End
-   Begin VB.Label lblHeureVisite 
-      Caption         =   "00:00:00"
+   Begin VB.Label lblHeure 
+      Caption         =   "Il est "
       BeginProperty Font 
          Name            =   "Comic Sans MS"
          Size            =   27.75
          Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   615
+      Left            =   720
+      TabIndex        =   5
+      Top             =   8160
+      Width           =   3015
+   End
+   Begin VB.Label lblTitre 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      Caption         =   "Horaires des visites"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   48
+         Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   735
+      Height          =   1350
+      Left            =   2280
+      TabIndex        =   3
+      Top             =   0
+      Width           =   9345
+   End
+   Begin VB.Label lblHeureVisite 
+      Caption         =   "00:00"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   44.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   1215
       Index           =   1
-      Left            =   7920
+      Left            =   10080
       TabIndex        =   2
-      Top             =   1680
-      Width           =   3495
+      Top             =   1410
+      Width           =   2880
    End
    Begin VB.Label lblVisite 
       Caption         =   "Prochaine visite"
       BeginProperty Font 
          Name            =   "Comic Sans MS"
-         Size            =   27.75
+         Size            =   44.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   735
+      Height          =   1155
       Index           =   1
-      Left            =   480
+      Left            =   240
       TabIndex        =   1
-      Top             =   1680
-      Width           =   6135
+      Top             =   1440
+      Width           =   7095
    End
    Begin VB.Label lblHeureCourante 
+      AutoSize        =   -1  'True
       Caption         =   "00:00:00"
       BeginProperty Font 
          Name            =   "Comic Sans MS"
-         Size            =   72
+         Size            =   60
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1935
+      Height          =   1665
       Left            =   3960
       TabIndex        =   0
       Top             =   7800
-      Width           =   7215
+      Width           =   5460
    End
 End
 Attribute VB_Name = "frmHoraires"
@@ -134,12 +171,32 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                        vbQuestion + vbOKCancel + vbDefaultButton2, "Horaires")
         If lRet = vbOK Then Unload Me
         
+    Case vbKeyNumpad0    ' 0
+        lRet = MsgBox("Voulez-vous arrêter l'ordinateur ?", _
+                       vbQuestion + vbOKCancel + vbDefaultButton2, "Horaires")
+        If lRet = vbOK Then ArreterWindows
+        
+    Case vbKeyReturn    ' Entrée
+        frmOptions.Show vbModal
+        
+        ' Met à jour les visites
+        Call MajTabHeureVisite
+        Call PutVisitesDansForm
+        
     Case vbKeyAdd       ' Plus
         Call DecaleVisite(1)
         Call PutVisitesDansForm
         
     Case vbKeySubtract  ' Moins
         Call DecaleVisite(-1)
+        Call PutVisitesDansForm
+    
+    Case vbKeyMultiply  ' Multiplier
+        Call DecaleNoVisite(1)
+        Call PutVisitesDansForm
+    
+    Case vbKeyDivide    ' Diviser
+        Call DecaleNoVisite(-1)
         Call PutVisitesDansForm
     
     End Select
@@ -151,6 +208,7 @@ Private Sub Form_Load()
     Call GetOptions
     Call InitFrmHoraires
     Call InitTabHeureVisite
+    Call InitTabNoVisite
     Call PutVisitesDansForm
     
 End Sub
@@ -164,15 +222,18 @@ Private Sub Form_Resize()
     ' Heure courante
     lblHeureCourante.Left = (Me.Width - lblHeureCourante.Width) / 2
     lblHeureCourante.Top = Me.Height - lblHeureCourante.Height - 50
+    lblHeure.Left = lblHeureCourante.Left - lblHeure.Width
+    lblHeure.Top = lblHeureCourante.Top + (lblHeureCourante.Height - lblHeure.Height) / 2
     
     ' Visites
     For i = lblHeureVisite.LBound To lblHeureVisite.UBound
-        lblHeureVisite(i).Left = Me.Width - lblHeureVisite(i).Width - lblVisite(1).Left
+        lblHeureVisite(i).Left = Me.Width - lblHeureVisite(i).Width - 200
+        lblNoVisite(i).Left = lblHeureVisite(i).Left - lblNoVisite(i).Width - 200
     Next
     
     ' Images
     picHoraires.Left = lblVisite(2).Left
-    picHoraires.Width = lblHeureVisite(2).Left - picHoraires.Left - 200
+    picHoraires.Width = lblNoVisite(2).Left - picHoraires.Left - 200
     picHoraires.Top = lblVisite(2).Top + lblVisite(2).Height + 50
     picHoraires.Height = lblHeureCourante.Top - picHoraires.Top
     
@@ -186,6 +247,7 @@ Private Sub tmrHoraires_Timer()
     ' Décale les visites si une visite vient de commencer
     If Time >= gTabHeureVisite(1) Then
         Call DecaleVisite(gOptions.DureeVisite)
+        Call DecaleNoVisite(1)
         Call PutVisitesDansForm
     End If
     
