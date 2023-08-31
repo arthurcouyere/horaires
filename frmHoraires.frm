@@ -14,6 +14,16 @@ Begin VB.Form frmHoraires
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    WindowState     =   2  'Maximized
+   Begin VB.PictureBox picTitre 
+      BorderStyle     =   0  'None
+      Height          =   1455
+      Left            =   1080
+      ScaleHeight     =   1455
+      ScaleWidth      =   12255
+      TabIndex        =   6
+      Top             =   0
+      Width           =   12255
+   End
    Begin VB.Timer tmrHoraires 
       Enabled         =   0   'False
       Left            =   240
@@ -25,7 +35,7 @@ Begin VB.Form frmHoraires
       Left            =   600
       ScaleHeight     =   3855
       ScaleWidth      =   7575
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   3360
       Width           =   7575
    End
@@ -43,7 +53,7 @@ Begin VB.Form frmHoraires
       Height          =   1215
       Index           =   1
       Left            =   7680
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   1410
       Width           =   2160
    End
@@ -60,28 +70,9 @@ Begin VB.Form frmHoraires
       EndProperty
       Height          =   615
       Left            =   720
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   8160
       Width           =   3015
-   End
-   Begin VB.Label lblTitre 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      Caption         =   "Horaires des visites"
-      BeginProperty Font 
-         Name            =   "Comic Sans MS"
-         Size            =   48
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1350
-      Left            =   2280
-      TabIndex        =   3
-      Top             =   0
-      Width           =   9345
    End
    Begin VB.Label lblHeureVisite 
       Caption         =   "00:00"
@@ -217,7 +208,8 @@ Private Sub Form_Resize()
     Dim i As Long
     
     ' Titre
-    lblTitre.Left = (Me.Width - lblTitre.Width) / 2
+    'lblTitre.Left = (Me.Width - lblTitre.Width) / 2
+    picTitre.Left = (Me.Width - picTitre.Width) / 2
     
     ' Heure courante
     lblHeureCourante.Left = (Me.Width - lblHeureCourante.Width) / 2

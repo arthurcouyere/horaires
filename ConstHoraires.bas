@@ -14,4 +14,8 @@ Public Const NB_VISITES = 7
 Public Const LIBELLE_AUTRE_VISITE = "Visites suivantes"
 
 ' Image de fond
-Public Const FICHIER_IMAGE = "Fond.jpg"
+Public Const FICHIER_IMAGE = "Fond.gif"
+
+' Titre
+Public Const FICHIER_TITRE = "Titre.gif"
+

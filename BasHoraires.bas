@@ -68,9 +68,9 @@ Public Sub GetOptions()
 '        .Couleurs.AutreVisite = StringToRGB(GetSetting(App.Title, "Couleurs", _
 '                            "AutreVisite", "000000"))
         .Couleurs.Fond = RGB(255, 255, 255)
-        .Couleurs.Titre = RGB(28, 119, 29)
-        .Couleurs.HeureCourante = RGB(27, 38, 83)
-        .Couleurs.ProchaineVisite = RGB(223, 51, 31)
+        .Couleurs.Titre = RGB(32, 57, 148) ' RGB(28, 119, 29)
+        .Couleurs.HeureCourante = RGB(100, 61, 125)
+        .Couleurs.ProchaineVisite = RGB(243, 41, 31)
         .Couleurs.AutreVisite = RGB(0, 0, 0)
         
         ' Timer

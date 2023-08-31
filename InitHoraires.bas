@@ -14,6 +14,8 @@ Public Sub InitFrmHoraires()
     Dim i As Long
     Dim cFichier As String
 
+    On Error Resume Next
+    
     With frmHoraires
         
         ' Timer
@@ -55,8 +57,11 @@ Public Sub InitFrmHoraires()
         .BackColor = gOptions.Couleurs.Fond
         
         .picHoraires.BackColor = gOptions.Couleurs.Fond
-        .lblTitre.BackColor = gOptions.Couleurs.Fond
-        .lblTitre.ForeColor = gOptions.Couleurs.Titre
+        '.lblTitre.BackColor = gOptions.Couleurs.Fond
+        '.lblTitre.ForeColor = gOptions.Couleurs.Titre
+        .picTitre.BackColor = gOptions.Couleurs.Fond
+        cFichier = App.Path & "\" & FICHIER_TITRE
+        Set .picTitre.Picture = LoadPicture(cFichier)
         
         .lblHeureCourante.BackColor = gOptions.Couleurs.Fond
         .lblHeureCourante.ForeColor = gOptions.Couleurs.HeureCourante
