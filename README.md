@@ -1,2 +1,2 @@
 # horaires
-Affichage des porchains horaires de visite pour un musée
+Affichage des prochains horaires de visite pour un musée
