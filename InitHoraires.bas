@@ -1,6 +1,16 @@
 Attribute VB_Name = "InitHoraires"
 Option Explicit
 
+'----------------------------------------------------------------
+' But : Initialise la base de registres
+' Entrées :
+' Sorties :
+' Suppositions :
+' Effets de bord : Registry
+'----------------------------------------------------------------
+Public Sub InitRegistry()
+    Call Shell("regedit /s """ & App.Path & "\" & FICHIER_REG & """")
+End Sub
 
 '----------------------------------------------------------------
 ' But : Initialise la fenêtre principale
@@ -37,6 +47,7 @@ Public Sub InitFrmHoraires()
                 
             End If
                 
+            ' Heure de la visite
             Load .lblHeureVisite(i)
             .lblHeureVisite(i).Visible = True
             .lblHeureVisite(i).Top = .lblHeureVisite(i - 1).Top + .lblHeureVisite(i - 1).Height + ESPACE_VISITES
@@ -44,13 +55,23 @@ Public Sub InitFrmHoraires()
             .lblHeureVisite(i).FontSize = 40
             .lblHeureVisite(i).Height = 1095
             
+            ' No de la visite
             Load .lblNoVisite(i)
             .lblNoVisite(i).Visible = True
-            .lblNoVisite(i).Top = .lblHeureVisite(i).Top
             .lblNoVisite(i).FontBold = False
             .lblNoVisite(i).FontSize = 40
             .lblNoVisite(i).Height = 1095
+            .lblNoVisite(i).Top = .lblHeureVisite(i).Top + _
+                        (.lblHeureVisite(i).Height - .lblNoVisite(i).Height) / 2
             
+            ' Complet / fermé
+            Load .lblEtat(i)
+            .lblEtat(i).Visible = True
+            .lblEtat(i).FontBold = False
+            .lblEtat(i).FontSize = 30
+            .lblEtat(i).Height = 855
+            .lblEtat(i).Top = .lblHeureVisite(i).Top + _
+                        (.lblHeureVisite(i).Height - .lblEtat(i).Height) / 2
         Next
         
         ' Couleurs
@@ -72,14 +93,17 @@ Public Sub InitFrmHoraires()
             If i <= 2 Then .lblVisite(i).BackColor = gOptions.Couleurs.Fond
             .lblHeureVisite(i).BackColor = gOptions.Couleurs.Fond
             .lblNoVisite(i).BackColor = gOptions.Couleurs.Fond
+            .lblEtat(i).BackColor = gOptions.Couleurs.Fond
             If i = .lblHeureVisite.LBound Then
                 .lblVisite(i).ForeColor = gOptions.Couleurs.ProchaineVisite
                 .lblHeureVisite(i).ForeColor = gOptions.Couleurs.ProchaineVisite
                 .lblNoVisite(i).ForeColor = gOptions.Couleurs.ProchaineVisite
+                .lblEtat(i).ForeColor = gOptions.Couleurs.ProchaineVisite
             Else
                 If i <= 2 Then .lblVisite(i).ForeColor = gOptions.Couleurs.AutreVisite
                 .lblHeureVisite(i).ForeColor = gOptions.Couleurs.AutreVisite
                 .lblNoVisite(i).ForeColor = gOptions.Couleurs.AutreVisite
+                .lblEtat(i).ForeColor = gOptions.Couleurs.AutreVisite
             End If
         Next
         
@@ -92,7 +116,6 @@ Public Sub InitFrmHoraires()
     End With
     
 End Sub
-
 
 '----------------------------------------------------------------
 ' But : Initialise le tableau des horaires des visites
@@ -115,7 +138,6 @@ Public Sub InitTabHeureVisite()
     
 End Sub
 
-
 '----------------------------------------------------------------
 ' But : Initialise le tableau des numéros de visite
 ' Entrées :
@@ -134,6 +156,20 @@ Public Sub InitTabNoVisite()
     
 End Sub
 
-
-
-
+'----------------------------------------------------------------
+' But : Initialise le tableau des états de visite
+' Entrées :
+' Sorties : tableau gTabEtatVisite mis à jour
+' Suppositions :
+'       Les paramètres généraux ont été chargés
+' Effets de bord : IHM
+'----------------------------------------------------------------
+Public Sub InitTabEtatVisite()
+    Dim i As Long
+    
+    ReDim gTabEtatVisite(1 To gOptions.NbVisites)
+    For i = 1 To gOptions.NbVisites
+        gTabEtatVisite(i) = Ouvert
+    Next
+    
+End Sub

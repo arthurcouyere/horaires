@@ -1,7 +1,7 @@
 frmHoraires = 176, 184, 645, 641, , 22, 23, 491, 480, 
-ConstHoraires = 110, 110, 647, 430, C
-InitHoraires = 110, 115, 579, 572, Z
+ConstHoraires = 110, 110, 647, 430, 
+InitHoraires = 110, 115, 579, 572, 
 GlHoraires = 88, 92, 557, 549, C
 BasHoraires = 44, 46, 513, 503, 
-PutHoraires = 132, 138, 601, 595, 
-frmOptions = 0, 0, 0, 0, C, 66, 69, 535, 526, C
+PutHoraires = 132, 138, 601, 595, C
+frmOptions = 22, 22, 556, 430, Z, 66, 69, 535, 526, C

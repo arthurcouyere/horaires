@@ -34,6 +34,7 @@ Public Sub PutVisitesDansForm()
             cTime = Format(gTabHeureVisite(i), "hh:nn")
             .lblHeureVisite(i).Caption = cTime
             .lblNoVisite(i).Caption = CStr(gTabNoVisite(i))
+            .lblEtat(i).Caption = GetLibelleEtatVisite(gTabEtatVisite(i))
         Next
     End With
     

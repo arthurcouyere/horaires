@@ -9,6 +9,11 @@ Public Type Couleur_Type
     AutreVisite As Long
 End Type
 
+Public Enum Etat_Enum
+    Ouvert = 1
+    Complet = 2
+    Ferme = 3
+End Enum
 
 Public Type Option_Type
     NbVisites   As Long             ' Nb de visites affichées simultanément
@@ -21,4 +26,4 @@ Public gOptions As Option_Type
 
 Public gTabHeureVisite() As Date
 Public gTabNoVisite() As Long
-
+Public gTabEtatVisite() As Etat_Enum

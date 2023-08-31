@@ -1,16 +1,4 @@
 REGEDIT4
 
-[HKEY_CURRENT_USER\Software\VB and VBA Program Settings\Horaires]
-
-[HKEY_CURRENT_USER\Software\VB and VBA Program Settings\Horaires\Couleurs]
-"Fond"="D5CCBB"
-"AutreVisite"="000000"
-"HeureCourante"="FF0000"
-"ProchaineVisite"="0000FF"
-"Titre"="008000"
-
-[HKEY_CURRENT_USER\Software\VB and VBA Program Settings\Horaires\Général]
-"IntervalleMAJHeure"="50"
-"DuréeVisite"="6"
-"NbVisites"="10"
-
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+"FontSmoothing"="2"

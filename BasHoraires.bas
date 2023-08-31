@@ -107,8 +107,6 @@ Public Sub DecaleVisite(Minute As Long, Optional Force As Boolean = False)
     
 End Sub
 
-
-
 '----------------------------------------------------------------
 ' But : Decale les numéros de visite de x
 '       Si x est négatif, vérifie que le nouveau numéro n'est
@@ -130,6 +128,44 @@ Public Sub DecaleNoVisite(Nb As Long)
     
 End Sub
 
+'----------------------------------------------------------------
+' But : Decale les etats de visite (une visite vient de commencer)
+' Entrées :
+' Sorties :
+' Suppositions :
+' Effets de bord :
+'----------------------------------------------------------------
+Public Sub DecaleEtatVisite()
+    Dim i As Long
+    
+    For i = 1 To gOptions.NbVisites - 1
+       gTabEtatVisite(i) = gTabEtatVisite(i + 1)
+    Next
+    
+    ' Etat par défaut de la dernière visite (nouvellement ajoutée)
+    gTabEtatVisite(gOptions.NbVisites) = Ouvert
+    
+End Sub
+
+'----------------------------------------------------------------
+' But : Modifie l'état de visite selon le cycle suivant:
+'
+'      +--> ouvert --> complet --> fermé --+
+'      |                                   |
+'      +----<----------<----------<--------+
+'
+' Entrées : No de la visite
+' Sorties :
+' Suppositions :
+' Effets de bord : IHM
+'----------------------------------------------------------------
+Public Sub ModifEtatVisite(NumVisite As Long)
+
+    ' Vérifie la validité du numéro de visite
+    If NumVisite < 1 Or NumVisite > gOptions.NbVisites Then Exit Sub
+    
+    gTabEtatVisite(NumVisite) = (gTabEtatVisite(NumVisite)) Mod 3 + 1
+End Sub
 
 '----------------------------------------------------------------
 ' But : Met à jour le tableau des visites (cas de la modif de la
@@ -151,3 +187,24 @@ Public Sub MajTabHeureVisite()
     Next
     
 End Sub
+
+'----------------------------------------------------------------
+' But : Renvoi le libellé d'un état de visite (ouvert / complet /fermé)
+' Entrées : Etat
+' Sorties : Libellé
+' Suppositions :
+' Effets de bord : IHM
+'----------------------------------------------------------------
+Public Function GetLibelleEtatVisite(etat As Etat_Enum) As String
+
+    Select Case etat
+    Case Complet
+        GetLibelleEtatVisite = LIBELLE_COMPLET
+    Case Ferme
+        GetLibelleEtatVisite = LIBELLE_FERME
+    Case Else
+        GetLibelleEtatVisite = ""
+    End Select
+    
+End Function
+

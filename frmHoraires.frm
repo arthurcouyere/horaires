@@ -39,11 +39,29 @@ Begin VB.Form frmHoraires
       Top             =   3360
       Width           =   7575
    End
-   Begin VB.Label lblNoVisite 
-      Caption         =   "1"
+   Begin VB.Label lblEtat 
+      Caption         =   "Complet"
       BeginProperty Font 
          Name            =   "Comic Sans MS"
-         Size            =   44.25
+         Size            =   33.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   950
+      Index           =   1
+      Left            =   5280
+      TabIndex        =   7
+      Top             =   1500
+      Width           =   3015
+   End
+   Begin VB.Label lblNoVisite 
+      Caption         =   "999"
+      BeginProperty Font 
+         Name            =   "Comic Sans MS"
+         Size            =   39.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -52,10 +70,10 @@ Begin VB.Form frmHoraires
       EndProperty
       Height          =   1215
       Index           =   1
-      Left            =   7680
+      Left            =   8280
       TabIndex        =   5
-      Top             =   1410
-      Width           =   2160
+      Top             =   1440
+      Width           =   1440
    End
    Begin VB.Label lblHeure 
       Caption         =   "Il est "
@@ -72,13 +90,13 @@ Begin VB.Form frmHoraires
       Left            =   720
       TabIndex        =   4
       Top             =   8160
-      Width           =   3015
+      Width           =   2175
    End
    Begin VB.Label lblHeureVisite 
       Caption         =   "00:00"
       BeginProperty Font 
          Name            =   "Comic Sans MS"
-         Size            =   44.25
+         Size            =   39.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -90,20 +108,20 @@ Begin VB.Form frmHoraires
       Left            =   10080
       TabIndex        =   2
       Top             =   1410
-      Width           =   2880
+      Width           =   2520
    End
    Begin VB.Label lblVisite 
       Caption         =   "Prochaine visite"
       BeginProperty Font 
          Name            =   "Comic Sans MS"
-         Size            =   44.25
+         Size            =   39.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1155
+      Height          =   1215
       Index           =   1
       Left            =   240
       TabIndex        =   1
@@ -122,10 +140,10 @@ Begin VB.Form frmHoraires
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1665
+      Height          =   1545
       Left            =   3960
       TabIndex        =   0
-      Top             =   7800
+      Top             =   7920
       Width           =   5460
    End
 End
@@ -155,16 +173,17 @@ Option Explicit
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     Dim lRet As Long
+    Dim lNumVisite As Long
     
     Select Case KeyCode
     Case vbKeyEscape    ' Echap
         lRet = MsgBox("Voulez-vous quitter l'application ?", _
-                       vbQuestion + vbOKCancel + vbDefaultButton2, "Horaires")
+                       vbQuestion + vbOKCancel, "Horaires")
         If lRet = vbOK Then Unload Me
         
-    Case vbKeyNumpad0    ' 0
+    Case vbKeyDecimal    ' Point décimal
         lRet = MsgBox("Voulez-vous arrêter l'ordinateur ?", _
-                       vbQuestion + vbOKCancel + vbDefaultButton2, "Horaires")
+                       vbQuestion + vbOKCancel, "Horaires")
         If lRet = vbOK Then ArreterWindows
         
     Case vbKeyReturn    ' Entrée
@@ -190,6 +209,25 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
         Call DecaleNoVisite(-1)
         Call PutVisitesDansForm
     
+    Case vbKeyNumpad0, _
+         vbKeyNumpad1, _
+         vbKeyNumpad2, _
+         vbKeyNumpad3, _
+         vbKeyNumpad4, _
+         vbKeyNumpad5, _
+         vbKeyNumpad6, _
+         vbKeyNumpad7, _
+         vbKeyNumpad8, _
+         vbKeyNumpad9
+
+         
+        ' Numéro de visite :
+        '    - 1 à 10 pour les touches 0 à 9 du pavé numérique
+        lNumVisite = KeyCode - vbKeyNumpad0 + 1
+        
+        Call ModifEtatVisite(lNumVisite)
+        Call PutVisitesDansForm
+        
     End Select
     
 End Sub
@@ -197,9 +235,11 @@ End Sub
 Private Sub Form_Load()
     
     Call GetOptions
+    Call InitRegistry
     Call InitFrmHoraires
     Call InitTabHeureVisite
     Call InitTabNoVisite
+    Call InitTabEtatVisite
     Call PutVisitesDansForm
     
 End Sub
@@ -221,6 +261,7 @@ Private Sub Form_Resize()
     For i = lblHeureVisite.LBound To lblHeureVisite.UBound
         lblHeureVisite(i).Left = Me.Width - lblHeureVisite(i).Width - 200
         lblNoVisite(i).Left = lblHeureVisite(i).Left - lblNoVisite(i).Width - 200
+        lblEtat(i).Left = lblNoVisite(i).Left - lblEtat(i).Width - 200
     Next
     
     ' Images
@@ -240,6 +281,7 @@ Private Sub tmrHoraires_Timer()
     If Time >= gTabHeureVisite(1) Then
         Call DecaleVisite(gOptions.DureeVisite)
         Call DecaleNoVisite(1)
+        Call DecaleEtatVisite
         Call PutVisitesDansForm
     End If
     
